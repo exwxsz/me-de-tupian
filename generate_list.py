@@ -3,7 +3,7 @@ import json
 
 # 🔥 配置：这里填你【本地图片的根目录】
 # 比如你的本地路径是 D:\图片\me-de-tupian\images\chapters\个人烤肉
-ROOT_FOLDER = r"D:\github projects\me-de-tupian\images\chapters\个人烤肉"
+ROOT_FOLDER = r"D:\github project\me-de-tupian\images\chapters\个人烤肉"
 
 # 支持的图片格式（可自行添加）
 IMAGE_EXTS = (".png", ".jpg", ".jpeg", ".gif", ".webp")
