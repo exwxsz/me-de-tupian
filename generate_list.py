@@ -1,5 +1,6 @@
 import os
 import json
+import re
 
 # 🔥 配置：这里填你【本地图片的根目录】
 # 比如你的本地路径是 D:\图片\me-de-tupian\images\chapters\个人烤肉
@@ -7,6 +8,21 @@ ROOT_FOLDER = r"D:\github project\me-de-tupian\images\chapters\个人烤肉"
 
 # 支持的图片格式（可自行添加）
 IMAGE_EXTS = (".png", ".jpg", ".jpeg", ".gif", ".webp")
+
+def natural_parts(text):
+    """把字符串切成 文本/数字 片段；数字转成 int，实现按数值大小比较"""
+    parts = []
+    for part in re.split(r"(\d+)", text):
+        if part.isdigit():
+            parts.append((1, int(part)))
+        else:
+            parts.append((0, part.lower()))
+    return tuple(parts)
+
+def natural_sort_key(name):
+    """自然排序：主文件名按数字大小比较，避免 001.png 后面跟 0010.png"""
+    stem, ext = os.path.splitext(name)
+    return (natural_parts(stem), ext.lower())
 
 def generate_list_json(folder_path):
     """遍历文件夹，生成list.json"""
@@ -16,6 +32,9 @@ def generate_list_json(folder_path):
         # 过滤图片文件
         if file.lower().endswith(IMAGE_EXTS):
             images.append(file)
+
+    # 按自然顺序排序（001.png < 002.png < ... < 009.png < 0010.png）
+    images.sort(key=natural_sort_key)
     
     # 没有图片则跳过
     if not images:
